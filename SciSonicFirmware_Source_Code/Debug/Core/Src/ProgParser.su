@@ -1,0 +1,12 @@
+ProgParser.c:22:6:ParsersInit	8	static
+ProgParser.c:30:6:SetUp_PullUp_Mask	32	static
+ProgParser.c:85:6:ParseXString	40	static
+ProgParser.c:256:6:ProcessXs	16	static
+ProgParser.c:278:6:ProcessCoils	16	static
+ProgParser.c:310:6:ProcessTimer	16	static
+ProgParser.c:342:6:ProcessTimers	16	static
+ProgParser.c:350:6:SetTimerParams	24	static
+ProgParser.c:364:6:ProcessProgLine	72	static
+ProgParser.c:564:6:ProgInit	24	static
+ProgParser.c:612:6:ProcessProgramm	280	static
+ProgParser.c:660:6:ProcessIO	8	static

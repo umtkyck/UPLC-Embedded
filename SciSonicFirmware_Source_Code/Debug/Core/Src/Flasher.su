@@ -1,0 +1,9 @@
+Flasher.c:16:6:FlasherInit	8	static
+Flasher.c:22:15:getCRC	1056	static
+Flasher.c:125:6:SendAnswer	24	static
+Flasher.c:133:9:HexBufToBuf	48	static
+Flasher.c:155:6:WheitBusy	8	static
+Flasher.c:160:6:ProcessRecvedBuf	280	static
+Flasher.c:204:6:FinishFlash	24	static
+Flasher.c:227:6:TestFlash	24	static
+Flasher.c:263:6:PC_BuffProcessing	16	static
