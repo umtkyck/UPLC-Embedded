@@ -1,22 +1,22 @@
+/*
+/  Filename: main.h	        	                                            /
+/  Feature:      					                                        /
+/  Module:   	                                                            /
+/  Author:	 Mesaflix						                                /
+/                                                                           /
+/                                                                           /
+/  ******************** Ltd. owns the copyright in this                     /
+/  and associated documents and all rights are reserved.                    /
+/  This document and associated documents must not be                       /
+/  used for any purpose other than that for which they                      /
+/  are supplied and must not be copied in whole or in                       /
+/  part, or disclosed to others without the prior                           /
+/  written consent of Mesaflix Ltd.  Any copy                   			/
+/  of this document made by any method must also contain a                  /
+/  copy of this legend.                                                     /
+/                                                                           /
+*/
 /* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -55,13 +55,6 @@ void Error_Handler(void);
 /* USER CODE BEGIN EFP */
 extern bool Send_Data_To_CDC(uint8_t * Data, uint8_t Len);
 /* USER CODE END EFP */
-
-/*DEBUG_MESUT_START*/
-
-uint16_t mask_val;
-
-/*DEBUG_MESUT_END*/
-
 
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_13

@@ -38,7 +38,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
  ../Core/Inc/Globals.h ../Core/Inc/main.h ../Core/Inc/Flasher.h \
  ../Core/Inc/Globals.h ../Core/Inc/ProgParser.h ../Core/Inc/Flasher.h \
- ../Core/Src/MyFlah.h
+ ../Core/Inc/MyFlah.h
 
 ../Core/Inc/main.h:
 
@@ -130,4 +130,4 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Core/Inc/Flasher.h:
 
-../Core/Src/MyFlah.h:
+../Core/Inc/MyFlah.h:

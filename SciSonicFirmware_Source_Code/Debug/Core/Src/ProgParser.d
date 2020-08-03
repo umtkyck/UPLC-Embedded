@@ -27,7 +27,7 @@ Core/Src/ProgParser.o: ../Core/Src/ProgParser.c ../Core/Inc/ProgParser.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h \
- ../Core/Inc/Globals.h ../Core/Inc/Flasher.h ../Core/Src/MyFlah.h
+ ../Core/Inc/Globals.h ../Core/Inc/Flasher.h ../Core/Inc/MyFlah.h
 
 ../Core/Inc/ProgParser.h:
 
@@ -93,4 +93,4 @@ Core/Src/ProgParser.o: ../Core/Src/ProgParser.c ../Core/Inc/ProgParser.h \
 
 ../Core/Inc/Flasher.h:
 
-../Core/Src/MyFlah.h:
+../Core/Inc/MyFlah.h:

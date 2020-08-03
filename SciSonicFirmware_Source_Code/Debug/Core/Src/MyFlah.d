@@ -27,7 +27,7 @@ Core/Src/MyFlah.o: ../Core/Src/MyFlah.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h \
- ../Core/Src/MyFlah.h
+ ../Core/Inc/MyFlah.h
 
 ../Core/Inc/main.h:
 
@@ -87,4 +87,4 @@ Core/Src/MyFlah.o: ../Core/Src/MyFlah.c ../Core/Inc/main.h \
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h:
 
-../Core/Src/MyFlah.h:
+../Core/Inc/MyFlah.h:
