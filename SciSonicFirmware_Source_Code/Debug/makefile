@@ -53,8 +53,8 @@ SciSonicFirmware.bin \
 all: SciSonicFirmware.elf secondary-outputs
 
 # Tool invocations
-SciSonicFirmware.elf: $(OBJS) $(USER_OBJS) C:\Users\MesutSen\Documents\Mesut_Proj\SciSonic_Ladder\MicroPLC-20200727T155945Z-001\MicroPLC\SciSonicFirmware_Source_Code\STM32F103C8TX_FLASH.ld
-	arm-none-eabi-gcc -o "SciSonicFirmware.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\MesutSen\Documents\Mesut_Proj\SciSonic_Ladder\MicroPLC-20200727T155945Z-001\MicroPLC\SciSonicFirmware_Source_Code\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SciSonicFirmware.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SciSonicFirmware.elf: $(OBJS) $(USER_OBJS) C:\Users\MesutSen\Documents\Mesut_Proj\scisonicLadderEmbedded\SciSonicFirmware_Source_Code\STM32F103C8TX_FLASH.ld
+	arm-none-eabi-gcc -o "SciSonicFirmware.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\MesutSen\Documents\Mesut_Proj\scisonicLadderEmbedded\SciSonicFirmware_Source_Code\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SciSonicFirmware.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -65,6 +65,7 @@ typedef struct Timer_S
 typedef struct CntDataStr
 {
 	float CntVal[MAXCNTVAR];
+	float CntInitVal;
 }CntDataStr;
 
 extern Xs Xses[MAXIOVAR];
