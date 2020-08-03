@@ -35,7 +35,9 @@ uint32_t len;
 typedef struct ADCChannels
 {
 	float FB1;  //0...100% от 3,3V
+	float FB1p;  //0...100% от 3,3V
 	float FB2;  //0...100% от 3,3V
+	float FB2p;  //0...100% от 3,3V
 	float CH1;
 	float CH2;
 	float CH3;

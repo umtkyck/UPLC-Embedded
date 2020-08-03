@@ -28,6 +28,8 @@
 #include "Globals.h"
 #include "Flasher.h"
 #include "ProgParser.h"
+#include "MyFlah.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,14 +83,17 @@ void ProcessADC();
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint32_t BackTick;
+uint32_t LedTick;
 uint8_t Ticks;
+uint8_t led_start_once;
+int led_blink_val;
 void LED_Service()
 {
 	if(!ProgrammingMode)
 	 {
 		 if(FlashIsProgrammed && ProgInited)
 		 {
-			 if((HAL_GetTick()-BackTick)>1500)
+			 if((HAL_GetTick()-BackTick)>1000)
 				 {
 				 HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
 				 BackTick=HAL_GetTick();
@@ -114,6 +119,34 @@ void LED_Service()
 		 HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin, GPIO_PIN_RESET);
 		 BackTick=HAL_GetTick();
 	 }
+}
+
+void Led_Startup()
+{
+	Flash_ReadPage(pageData,1,2);
+	uint8_t data[1];
+	uint8_t *ledPtr=pageData;
+	if(ledPtr[0] == 'L')
+	{
+		ledPtr = ledPtr + 1;
+		memcpy(data,ledPtr,1);
+		sscanf((char*)data,"%d",&led_blink_val);
+	}
+	else
+	{
+		/*Do Nothing. Error Stage*/
+	}
+	led_blink_val = led_blink_val * 2;
+	while(led_blink_val>0)
+	{
+		if((HAL_GetTick()-BackTick)>300)
+		{
+			 HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+			 BackTick=HAL_GetTick();
+			 led_blink_val--;
+		}
+		WDT();
+	}
 }
 /* USER CODE END 0 */
 
@@ -165,6 +198,8 @@ int main(void)
   InitGlobals();
   WDT();
   FlasherInit();
+  WDT();
+  Led_Startup();
   WDT();
   while (1)
   {
@@ -591,49 +626,52 @@ void CalcProcents()
 //----------------------------------------------------------------------------------
 //#define USE_VREF;
 //#define PLC_DEBUG
+#define convertToMili 1000
 void ProcessADC()
 {
-	//Channels
-float Vref;
-float temp;
-#ifdef USE_VREF
-if(ADCValues[8]>0)
-Vref = 1.16*4095.0/(float)(ADCValues[8]);
-else Vref =3.3;
-#else
-Vref = 3.3;
-#endif
-#ifndef PLC_DEBUG
-temp = (float)ADCValues[9]*Vref/4095.0;
-Channels.Temp = ((1.43-temp)/4.3)+25.0;
-Channels.FB1 = (float)(ADCValues[0]/4095.0)*100.0;
-Channels.FB2 = (float)(ADCValues[1]/4095.0)*100.0;
-temp = (float)ADCValues[2]*Vref/4095.0;
-Channels.CH1 = (24.49*temp)/2.49;
-temp = (float)ADCValues[3]*Vref/4095.0;
-Channels.CH2 = (24.49*temp)/2.49;
-temp = (float)ADCValues[4]*Vref/4095.0;
-Channels.CH3 = (24.49*temp)/2.49;
-temp = (float)ADCValues[5]*Vref/4095.0;
-Channels.CH4 = (24.49*temp)/2.49;
-temp = (float)ADCValues[6]*Vref/4095.0;
-Channels.CH5 = (24.49*temp)/2.49;
-temp = (float)ADCValues[7]*Vref/4095.0;
-Channels.Vin = (24.49*temp)/2.49;
-#else
-temp = (float)ADCValues[9]*Vref/4095.0;
-Channels.Temp = ((1.43-temp)/4.3)+25.0;;
-Channels.FB1 = (float)(ADCValues[0]/4095.0)*100.0;
-Channels.FB2 = (float)(ADCValues[1]/4095.0)*100.0;
-Channels.Vin = Vref;
-Channels.CH1 = (float)ADCValues[2]*Vref/4095.0;
-Channels.CH2 = (float)ADCValues[3]*Vref/4095.0;
-Channels.CH3 = (float)ADCValues[4]*Vref/4095.0;
-Channels.CH4 = (float)ADCValues[5]*Vref/4095.0;
-Channels.CH5 = (float)ADCValues[6]*Vref/4095.0;
-#endif
-CalcProcents();
-ADCReady=false;
+		//Channels
+	float Vref;
+	float temp;
+	#ifdef USE_VREF
+	if(ADCValues[8]>0)
+	Vref = 1.16*4095.0/(float)(ADCValues[8]);
+	else Vref =3.3;
+	#else
+	Vref = 3.3;
+	#endif
+	#ifndef PLC_DEBUG
+	temp = (float)ADCValues[9]*Vref/4095.0;
+	Channels.Temp = ((1.43-temp)/4.3)+25.0;
+	Channels.FB1 = (float)(ADCValues[0]/4095.0)*100.0;
+	Channels.FB2 = (float)(ADCValues[1]/4095.0)*100.0;
+	Channels.FB1p = (float)(ADCValues[0]/4095.0)*1000;
+	Channels.FB2p = (float)(ADCValues[1]/4095.0)*1000;
+	temp = (float)ADCValues[2]*Vref/4095.0;
+	Channels.CH1 = ((24.49*temp)/2.49)*convertToMili;
+	temp = (float)ADCValues[3]*Vref/4095.0;
+	Channels.CH2 = ((24.49*temp)/2.49)*convertToMili;
+	temp = (float)ADCValues[4]*Vref/4095.0;
+	Channels.CH3 = ((24.49*temp)/2.49)*convertToMili;
+	temp = (float)ADCValues[5]*Vref/4095.0;
+	Channels.CH4 = ((24.49*temp)/2.49)*convertToMili;
+	temp = (float)ADCValues[6]*Vref/4095.0;
+	Channels.CH5 = ((24.49*temp)/2.49)*convertToMili;
+	temp = (float)ADCValues[7]*Vref/4095.0;
+	Channels.Vin = ((24.49*temp)/2.49)*convertToMili;
+	#else
+	temp = (float)ADCValues[9]*Vref/4095.0;
+	Channels.Temp = ((1.43-temp)/4.3)+25.0;;
+	Channels.FB1 = (float)(ADCValues[0]/4095.0)*100.0;
+	Channels.FB2 = (float)(ADCValues[1]/4095.0)*100.0;
+	Channels.Vin = Vref;
+	Channels.CH1 = (float)ADCValues[2]*Vref/4095.0;
+	Channels.CH2 = (float)ADCValues[3]*Vref/4095.0;
+	Channels.CH3 = (float)ADCValues[4]*Vref/4095.0;
+	Channels.CH4 = (float)ADCValues[5]*Vref/4095.0;
+	Channels.CH5 = (float)ADCValues[6]*Vref/4095.0;
+	#endif
+	CalcProcents();
+	ADCReady=false;
 }
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------

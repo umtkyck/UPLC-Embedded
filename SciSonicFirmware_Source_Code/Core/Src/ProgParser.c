@@ -117,8 +117,16 @@ void ParseXString(uint8_t * XString, int xLen)
 			Xses[x.xnum].Condition=x.ccondition;
 			if(x.Inletter=='F')
 			{
-				if(x.InNum==0)  Xses[x.xnum].Input=&Channels.FB1;
-				else if(x.InNum==1)  Xses[x.xnum].Input=&Channels.FB2;
+				if(x.InNum==0)
+				{
+					if(!x.percent) Xses[x.xnum].Input=&Channels.FB1;
+					else Xses[x.xnum].Input=&Channels.FB1p;
+				}
+				else if(x.InNum==1)
+				{
+					if(!x.percent) Xses[x.xnum].Input=&Channels.FB2;
+					else Xses[x.xnum].Input=&Channels.FB2p;
+				}
 			}
 			else if(x.Inletter == 'I')
 			{
