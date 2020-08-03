@@ -98,7 +98,7 @@ void ParseXString(uint8_t * XString, int xLen)
 {
 	Xparm x;
 	uint8_t * str = XString;
-	uint8_t temp[4];
+	uint8_t temp[8];
 	int val=0;
 	memcpy(temp,str,3);
 	temp[3]=0;
@@ -115,7 +115,7 @@ void ParseXString(uint8_t * XString, int xLen)
 	}
 	else x.percent=false;	//% değil ise normal değeri alacak.
 	memcpy(temp,str,6);		//conditiondan sonraki değer temp e atanıyor. 12000 milivolt diyelim 5 karakter oradan, bir de B karakteri. toplam 6 karakter.
-	for(int i=0; i<6; i++)	//<%15BX01 gibi bir ifadede B ifadesini kontrol etmek için for döngüsüne sokuyor.
+	for(int i=0; i<8; i++)	//<%15BX01 gibi bir ifadede B ifadesini kontrol etmek için for döngüsüne sokuyor.
 	{
 		if(temp[i]=='B')
 		{
@@ -178,84 +178,81 @@ void ParseXString(uint8_t * XString, int xLen)
 			}
 			else if(x.Inletter == 'C')
 			{
-
-				Xses[x.xnum].Input=&CntData.CntVal[x.InNum];
-/*
 				switch(x.InNum)
 				{
 					case 0:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT0;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT0.CNT0_Val;
 						break;
 					}
 					case 1:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT1;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT1.CNT1_Val;
 						break;
 					}
 					case 2:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT2;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT2.CNT2_Val;
 						break;
 					}
 					case 3:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT3;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT3.CNT3_Val;
 						break;
 					}
 					case 4:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT4;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT4.CNT4_Val;
 						break;
 					}
 					case 5:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT5;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT5.CNT5_Val;
 						break;
 					}
 					case 6:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT6;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT6.CNT6_Val;
 						break;
 					}
 					case 7:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT7;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT7.CNT7_Val;
 						break;
 					}
 					case 8:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT8;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT8.CNT8_Val;
 						break;
 					}
 					case 9:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT9;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT9.CNT9_Val;
 						break;
 					}
 					case 10:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT10;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT10.CNT10_Val;
 						break;
 					}
 					case 11:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT11;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT11.CNT11_Val;
 						break;
 					}
 					case 12:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT12;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT12.CNT12_Val;
 						break;
 					}
 					case 13:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT13;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT13.CNT13_Val;
 						break;
 					}
 					case 14:
 					{
-						Xses[x.xnum].Input=&CntChnlsVal.CNT14;
+						Xses[x.xnum].Input=&CntChnlsVal.CNT14.CNT14_Val;
 						break;
 					}
 					default:
@@ -263,7 +260,6 @@ void ParseXString(uint8_t * XString, int xLen)
 						break;
 					}
 				}
-				*/
 			}
 			else
 			{
@@ -391,6 +387,7 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 	uint8_t prevop=0;
 	int index;
 	uint8_t op=0;
+	float *cntVal;
 
 	if(MyIDX[0]=='(')
 	{
@@ -551,24 +548,107 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 						}
 					}
 				}
+
+				switch(index)
+				{
+					case 0:
+					{
+						cntVal = &CntChnlsVal.CNT0.CNT0_Val;
+						break;
+					}
+					case 1:
+					{
+						cntVal = &CntChnlsVal.CNT1.CNT1_Val;
+						break;
+					}
+					case 2:
+					{
+						cntVal = &CntChnlsVal.CNT2.CNT2_Val;
+						break;
+					}
+					case 3:
+					{
+						cntVal = &CntChnlsVal.CNT3.CNT3_Val;
+						break;
+					}
+					case 4:
+					{
+						cntVal = &CntChnlsVal.CNT4.CNT4_Val;
+						break;
+					}
+					case 5:
+					{
+						cntVal = &CntChnlsVal.CNT5.CNT5_Val;
+						break;
+					}
+					case 6:
+					{
+						cntVal = &CntChnlsVal.CNT6.CNT6_Val;
+						break;
+					}
+					case 7:
+					{
+						cntVal = &CntChnlsVal.CNT7.CNT7_Val;
+						break;
+					}
+					case 8:
+					{
+						cntVal = &CntChnlsVal.CNT8.CNT8_Val;
+						break;
+					}
+					case 9:
+					{
+						cntVal = &CntChnlsVal.CNT9.CNT9_Val;
+						break;
+					}
+					case 10:
+					{
+						cntVal = &CntChnlsVal.CNT10.CNT10_Val;
+						break;
+					}
+					case 11:
+					{
+						cntVal = &CntChnlsVal.CNT11.CNT11_Val;
+						break;
+					}
+					case 12:
+					{
+						cntVal = &CntChnlsVal.CNT12.CNT12_Val;
+						break;
+					}
+					case 13:
+					{
+						cntVal = &CntChnlsVal.CNT13.CNT13_Val;
+						break;
+					}
+					case 14:
+					{
+						cntVal = &CntChnlsVal.CNT14.CNT14_Val;
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
 				if(op == CNTP)
 				{
-					CntData.CntVal[index]++;
+					*cntVal = *cntVal + 1;
 				}
 				else if(op == CNTN)
 				{
-					if(CntData.CntVal[index] > 0)
+					if(*cntVal > 0)
 					{
-						CntData.CntVal[index]--;
+						*cntVal = *cntVal - 1;
 					}
 					else
 					{
-						CntData.CntVal[index] = 0;
+						*cntVal = 0;
 					}
 				}
 				else if(op == CNTE)
 				{
-					CntData.CntVal[index] = val;
+					*cntVal = val;
 				}
 			}
 			return *result;
@@ -590,7 +670,13 @@ void ProgInit()
 	//W25qxx_ReadPage(pageData,1,0,256);
 	Flash_ReadPage(pageData,1,256);
 	uint8_t *data = pageData + 3; //MESUT, Led icin kod yazildi L5\n gibi
+	uint8_t *datac;
+	uint8_t datacount[8];
+	int dataval = 0;
 	uint16_t count, mask;
+	int index;
+	uint8_t temp[8];
+	uint8_t k;
 	memcpy(&mask, data, 2);
 	if(mask>255)
 	{
@@ -622,11 +708,116 @@ void ProgInit()
 		ParseXString(data,mask);
 		data=data+mask;
 	}
+	datac = data;
+	while(datac[0] != '(')
+	{
+		if(datac[0] == 'C')
+		{
+			datac = datac+1;
+			memcpy(datacount,datac,2);
+			sscanf((char*)datacount,"%d",&index);
+			datac = datac+3;
+			memcpy(temp,datac,7);
+			for(k=0;k<8;k++)
+			{
+				if(temp[k] == DELIM)
+				{
+					temp[k] = 0;
+					sscanf((char*)temp,"%d",&dataval);
+				}
+			}
+			switch(index)
+			{
+				case 0:
+				{
+					CntChnlsVal.CNT0.CNT0_Val = dataval;
+					break;
+				}
+				case 1:
+				{
+					CntChnlsVal.CNT1.CNT1_Val = dataval;
+					break;
+				}
+				case 2:
+				{
+					CntChnlsVal.CNT2.CNT2_Val = dataval;
+					break;
+				}
+				case 3:
+				{
+					CntChnlsVal.CNT3.CNT3_Val = dataval;
+					break;
+				}
+				case 4:
+				{
+					CntChnlsVal.CNT4.CNT4_Val = dataval;
+					break;
+				}
+				case 5:
+				{
+					CntChnlsVal.CNT5.CNT5_Val = dataval;
+					break;
+				}
+				case 6:
+				{
+					CntChnlsVal.CNT6.CNT6_Val = dataval;
+					break;
+				}
+				case 7:
+				{
+					CntChnlsVal.CNT7.CNT7_Val = dataval;
+					break;
+				}
+				case 8:
+				{
+					CntChnlsVal.CNT8.CNT8_Val = dataval;
+					break;
+				}
+				case 9:
+				{
+					CntChnlsVal.CNT9.CNT9_Val = dataval;
+					break;
+				}
+				case 10:
+				{
+					CntChnlsVal.CNT10.CNT10_Val = dataval;
+					break;
+				}
+				case 11:
+				{
+					CntChnlsVal.CNT11.CNT11_Val = dataval;
+					break;
+				}
+				case 12:
+				{
+					CntChnlsVal.CNT12.CNT12_Val = dataval;
+					break;
+				}
+				case 13:
+				{
+					CntChnlsVal.CNT13.CNT13_Val = dataval;
+					break;
+				}
+				case 14:
+				{
+					CntChnlsVal.CNT14.CNT14_Val = dataval;
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+
+
+		}
+		datac = datac + 1;
+	}
 
 	memcpy(&mask, data, 2);
 	data=data+2;
 	ProgLen=mask;
-	pageDataIndex = (uint16_t)(data-pageData);
+	pageDataIndex = (uint16_t)(datac-pageData);
 	ProgInited=true;
 }
 //---------------------------------------------------------------------------

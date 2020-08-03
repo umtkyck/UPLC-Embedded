@@ -64,23 +64,59 @@ typedef struct ADCChannels
 	float CH5p;
 }ADCChannels;
 
+
+
+typedef struct CntChannelsVals
+{
+	float CNT0_InitVal;
+	float CNT0_Val;
+	float CNT1_InitVal;
+	float CNT1_Val;
+	float CNT2_InitVal;
+	float CNT2_Val;
+	float CNT3_InitVal;
+	float CNT3_Val;
+	float CNT4_InitVal;
+	float CNT4_Val;
+	float CNT5_InitVal;
+	float CNT5_Val;
+	float CNT6_InitVal;
+	float CNT6_Val;
+	float CNT7_InitVal;
+	float CNT7_Val;
+	float CNT8_InitVal;
+	float CNT8_Val;
+	float CNT9_InitVal;
+	float CNT9_Val;
+	float CNT10_InitVal;
+	float CNT10_Val;
+	float CNT11_InitVal;
+	float CNT11_Val;
+	float CNT12_InitVal;
+	float CNT12_Val;
+	float CNT13_InitVal;
+	float CNT13_Val;
+	float CNT14_InitVal;
+	float CNT14_Val;
+}CntChannelsVals;
+
 typedef struct CntChannels
 {
-	float CNT0;
-	float CNT1;
-	float CNT2;
-	float CNT3;
-	float CNT4;
-	float CNT5;
-	float CNT6;
-	float CNT7;
-	float CNT8;
-	float CNT9;
-	float CNT10;
-	float CNT11;
-	float CNT12;
-	float CNT13;
-	float CNT14;
+	CntChannelsVals CNT0;
+	CntChannelsVals CNT1;
+	CntChannelsVals CNT2;
+	CntChannelsVals CNT3;
+	CntChannelsVals CNT4;
+	CntChannelsVals CNT5;
+	CntChannelsVals CNT6;
+	CntChannelsVals CNT7;
+	CntChannelsVals CNT8;
+	CntChannelsVals CNT9;
+	CntChannelsVals CNT10;
+	CntChannelsVals CNT11;
+	CntChannelsVals CNT12;
+	CntChannelsVals CNT13;
+	CntChannelsVals CNT14;
 }CntChannels;
 
 //----------------------------------------------------------------------
