@@ -310,7 +310,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 20;
+  hadc1.Init.NbrOfConversion = 10;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -677,7 +677,7 @@ void ProcessADC()
 	temp = (float)ADCValues[6]*Vref/4095.0;
 	Channels.CH5 = ((24.49*temp)/2.49)*convertToMili;
 	temp = (float)ADCValues[7]*Vref/4095.0;
-	Channels.Vin = ((1327*temp)/249)*convertToMili;//Diranc 10.7888k olarak alındı.
+	Channels.Vin = ((24.49*temp)/2.49)*convertToMili;//Diranc 10.7888k olarak alındı.
 	#else
 	temp = (float)ADCValues[9]*Vref/4095.0;
 	Channels.Temp = ((1.43-temp)/4.3)+25.0;;
