@@ -79,4 +79,8 @@ extern void ProgInit();
 extern void ProcessIO();
 
 
+uint8_t *datacountSS;
+uint16_t pagelast;
+
+
 #endif /* INC_PROGPARSER_H_ */
