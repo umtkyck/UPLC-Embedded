@@ -39,7 +39,7 @@ typedef struct Xs
 {
 	float *Input;
 	uint8_t Condition;
-	uint8_t ConditionValue;
+	uint32_t ConditionValue;
 	bool Value;
 }Xs;
 
@@ -50,7 +50,7 @@ typedef struct Xparm
 	uint8_t xnum;
 	uint8_t ccondition;
 	bool percent;
-	uint8_t value;
+	uint32_t value;
 }Xparm;
 
 typedef struct Timer_S
