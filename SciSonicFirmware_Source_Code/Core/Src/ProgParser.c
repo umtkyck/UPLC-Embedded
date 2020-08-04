@@ -114,7 +114,7 @@ void ParseXString(uint8_t * XString, int xLen)
 		str=str+1;		//yüzde kaç olduğu alınıyor.
 	}
 	else x.percent=false;	//% değil ise normal değeri alacak.
-	memcpy(temp,str,6);		//conditiondan sonraki değer temp e atanıyor. 12000 milivolt diyelim 5 karakter oradan, bir de B karakteri. toplam 6 karakter.
+	memcpy(temp,str,8);		//conditiondan sonraki değer temp e atanıyor. 12000 milivolt diyelim 5 karakter oradan, bir de B karakteri. toplam 6 karakter.
 	for(int i=0; i<8; i++)	//<%15BX01 gibi bir ifadede B ifadesini kontrol etmek için for döngüsüne sokuyor.
 	{
 		if(temp[i]=='B')
