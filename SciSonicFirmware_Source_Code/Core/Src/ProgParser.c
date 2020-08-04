@@ -36,7 +36,7 @@ void ParsersInit()
   memset(Xses,0,sizeof(Xs)*MAXIOVAR);
   memset(Timers,0,sizeof(Timer_S)*MAXTVAR);
   memset(Mvars,0,sizeof(bool)*MAXMVAR);
-  memset(Coils,1,sizeof(bool)*MAXCOIL);
+  memset(Coils,0,sizeof(bool)*MAXCOIL);
 }
 //---------------------------------------------------------------------------
 void SetUp_PullUp_Mask(uint16_t mask)
@@ -296,31 +296,30 @@ void ProcessCoils()
 {
 	if(CareOuts)
 	{
-	for(int i=0; i<MAXCOIL; i++)
-	  {
-	   switch(i)
-	   {
-	   case 0:
-	   	   	   {
-	   	   		 if(Coils[i])
-	   	   			 HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,GPIO_PIN_SET);
-	   	   		 else
-	   	   			 HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,GPIO_PIN_RESET);
-	   	   		 break;
-	   	   	   }
-	   case 1:
-	   	   	   {
-	   	   		 if(Coils[i])
-	   	   			 HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,GPIO_PIN_SET);
-	   	   		 else
-	   	   			 HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,GPIO_PIN_RESET);
-	   	   		 break;
-	   	   	   }
-	   default:
-		   	   break;
-
-	   }
-	  }
+		for(int i=0; i<MAXCOIL; i++)
+		{
+			switch(i)
+			{
+			   case 0:
+			   {
+				   if(Coils[i])
+					   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,GPIO_PIN_SET);
+				   else
+					   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,GPIO_PIN_RESET);
+				   break;
+			   }
+			   case 1:
+			   {
+				   if(Coils[i])
+					   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,GPIO_PIN_SET);
+				   else
+					   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,GPIO_PIN_RESET);
+				   break;
+			   }
+			   default:
+				   break;
+			}
+		}
 	}
 }
 //---------------------------------------------------------------------------
@@ -328,12 +327,12 @@ void ProcessTimer(Timer_S *Timer)
 {
 	if(Timer->Type==TN)
 	{
-	  if(!Timer->En)
+		if(!Timer->En)
 		{
 			Timer->Q=false;
 			Timer->StartTick=HAL_GetTick();
 		}
-	  else
+		else
 		{
 			if((HAL_GetTick()-Timer->StartTick)>=Timer->Delay)
 			{
@@ -344,12 +343,12 @@ void ProcessTimer(Timer_S *Timer)
 	}
 	else if(Timer->Type==TF)
 	{
-	  if(Timer->En)
+		if(Timer->En)
 		{
 			Timer->Q=true;
 			Timer->StartTick=HAL_GetTick();
 		}
-	  else
+		else
 		{
 			if((HAL_GetTick()-Timer->StartTick)>Timer->Delay) Timer->Q = false;
 		}
@@ -382,7 +381,7 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 {
 	uint8_t *MyIDX=Progstring;
 	uint32_t Mylen=0;
-	uint8_t data[6];
+	uint8_t data[8];
 	uint8_t letter;
 	uint8_t prevop=0;
 	int index;
@@ -637,13 +636,13 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 				}
 				else if(op == CNTN)
 				{
-					if(*cntVal > 0)
+					if(*cntVal > -1)
 					{
 						*cntVal = *cntVal - 1;
 					}
 					else
 					{
-						*cntVal = 0;
+						*cntVal = -1;
 					}
 				}
 				else if(op == CNTE)
@@ -651,7 +650,7 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 					*cntVal = val;
 				}
 			}
-			return *result;
+			/*return *result;*/
 		}
 		else
 		{
@@ -813,9 +812,11 @@ void ProgInit()
 		}
 		datac = datac + 1;
 	}
+	datacountSS = datac - 2;
+	memcpy(&mask, datacountSS, 2);
 
-	memcpy(&mask, data, 2);
-	data=data+2;
+	//memcpy(&mask, data, 2);
+
 	ProgLen=mask;
 	pageDataIndex = (uint16_t)(datac-pageData);
 	ProgInited=true;
@@ -872,7 +873,7 @@ void ProcessProgramm()
 void ProcessIO()
 {
 	if(ProgrammingMode || !FlashIsProgrammed || !ProgInited)
-		{
+	{
 		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(NP1_GPIO_Port,NP1_Pin,GPIO_PIN_SET);
@@ -880,15 +881,18 @@ void ProcessIO()
 		HAL_GPIO_WritePin(NP3_GPIO_Port,NP3_Pin,GPIO_PIN_SET);
 		HAL_GPIO_WritePin(NP4_GPIO_Port,NP4_Pin,GPIO_PIN_SET);
 		HAL_GPIO_WritePin(NP5_GPIO_Port,NP5_Pin,GPIO_PIN_SET);
+
 		if(!ProgrammingMode && FlashIsProgrammed && !ProgInited)
+		{
 			ProgInit();
+		}
 		else if(!ProgrammingMode && !FlashIsProgrammed && !ProgInited)
 		{
 			TestFlash();
 		}
 		else
 			return;
-		}
+	}
 	ProcessXs();
 	ProcessTimers();
 	ProcessProgramm();

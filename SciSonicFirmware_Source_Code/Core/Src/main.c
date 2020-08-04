@@ -647,6 +647,7 @@ void CalcProcents()
 //----------------------------------------------------------------------------------
 //#define USE_VREF;
 //#define PLC_DEBUG
+#define VinOffsetVal 1910
 void ProcessADC()
 {
 		//Channels
@@ -677,7 +678,7 @@ void ProcessADC()
 	temp = (float)ADCValues[6]*Vref/4095.0;
 	Channels.CH5 = ((24.49*temp)/2.49)*convertToMili;
 	temp = (float)ADCValues[7]*Vref/4095.0;
-	Channels.Vin = ((24.49*temp)/2.49)*convertToMili;//Diranc 10.7888k olarak alındı.
+	Channels.Vin = (((24.49*temp)/2.49)*convertToMili) + VinOffsetVal;//Direnc 10.7888k olarak alındı.
 	#else
 	temp = (float)ADCValues[9]*Vref/4095.0;
 	Channels.Temp = ((1.43-temp)/4.3)+25.0;;
