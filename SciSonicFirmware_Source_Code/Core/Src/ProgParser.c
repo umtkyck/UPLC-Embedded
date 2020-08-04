@@ -121,7 +121,7 @@ void ParseXString(uint8_t * XString, int xLen)
 		{
 			temp[i]=0;
 			sscanf((char*)temp,"%d",&val);
-			x.value=(uint8_t)val;	//MESUT x.value condition  dan sonraki deger.
+			x.value=(uint32_t)val;	//MESUT x.value condition  dan sonraki deger.
 			str=str+i+2;			//hangi input olduğunu belirlemek için oraya gidiliyor
 			sscanf((char*)str,"%d",&val);
 			x.xnum=(uint8_t)val;
