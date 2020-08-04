@@ -1,6 +1,6 @@
 /*
 /  Filename: main.c		                                                    /
-/  Feature:      					                                        /
+/  Feature:  					                                            /
 /  Module:   	                                                            /
 /  Author:	 Mesaflix						                                /
 /                                                                           /
@@ -60,7 +60,7 @@ SPI_HandleTypeDef hspi2;
 /* USER CODE BEGIN PV */
 
 bool ADCReady;
-volatile uint16_t ADCValues[10];
+uint32_t ADCValues[10];
 
 /* USER CODE END PV */
 
@@ -83,6 +83,8 @@ void ProcessADC();
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#define convertToMili 1000
+
 uint32_t BackTick;
 uint32_t LedTick;
 uint8_t Ticks;
@@ -148,7 +150,28 @@ void Led_Startup()
 		}
 		WDT();
 	}
+	HAL_Delay(1000);
 }
+
+
+/*
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc1)
+{
+	if(hadc1->Instance == ADC1)
+	{
+		ADCValues[0] = ADCValuesDma[0];
+		ADCValues[1] = ADCValuesDma[1];
+		ADCValues[2] = ADCValuesDma[2];
+		ADCValues[3] = ADCValuesDma[3];
+		ADCValues[4] = ADCValuesDma[4];
+		ADCValues[5] = ADCValuesDma[5];
+		ADCValues[6] = ADCValuesDma[6];
+		ADCValues[7] = ADCValuesDma[7];
+		ADCValues[8] = ADCValuesDma[8];
+		ADCValues[9] = ADCValuesDma[9];
+	}
+}
+*/
 /* USER CODE END 0 */
 
 /**
@@ -160,7 +183,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	BackTick=0;
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -181,7 +203,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC1_Init();
   MX_SPI2_Init();
   MX_USB_DEVICE_Init();
   MX_DMA_Init();
@@ -204,7 +225,6 @@ int main(void)
   WDT();
   while (1)
   {
-	 // void USB_RX_MainProcess();
 	 if(ADCReady) ProcessADC();
 	 USB_RX_MainProcess();
 	 WDT();
@@ -229,7 +249,7 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -243,7 +263,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -282,7 +302,7 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 1 */
 
   /* USER CODE END ADC1_Init 1 */
-  /** Common config 
+  /** Common config
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
@@ -290,12 +310,12 @@ static void MX_ADC1_Init(void)
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 10;
+  hadc1.Init.NbrOfConversion = 20;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -304,7 +324,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_2;
@@ -312,7 +332,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = ADC_REGULAR_RANK_3;
@@ -320,7 +340,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_4;
@@ -328,7 +348,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_4;
   sConfig.Rank = ADC_REGULAR_RANK_5;
@@ -336,7 +356,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_5;
   sConfig.Rank = ADC_REGULAR_RANK_6;
@@ -344,7 +364,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_7;
@@ -352,7 +372,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_7;
   sConfig.Rank = ADC_REGULAR_RANK_8;
@@ -360,7 +380,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_VREFINT;
   sConfig.Rank = ADC_REGULAR_RANK_9;
@@ -368,7 +388,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
   sConfig.Rank = ADC_REGULAR_RANK_10;
@@ -448,10 +468,10 @@ static void MX_SPI2_Init(void)
 
 }
 
-/** 
+/**
   * Enable DMA controller clock
   */
-static void MX_DMA_Init(void) 
+static void MX_DMA_Init(void)
 {
 
   /* DMA controller clock enable */
@@ -480,10 +500,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, F_CS_Pin|NP5_Pin|NP4_Pin|NP3_Pin 
+  HAL_GPIO_WritePin(GPIOB, F_CS_Pin|NP5_Pin|NP4_Pin|NP3_Pin
                           |NP2_Pin|NP1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
@@ -496,9 +516,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : F_CS_Pin NP5_Pin NP4_Pin NP3_Pin 
+  /*Configure GPIO pins : F_CS_Pin NP5_Pin NP4_Pin NP3_Pin
                            NP2_Pin NP1_Pin */
-  GPIO_InitStruct.Pin = F_CS_Pin|NP5_Pin|NP4_Pin|NP3_Pin 
+  GPIO_InitStruct.Pin = F_CS_Pin|NP5_Pin|NP4_Pin|NP3_Pin
                           |NP2_Pin|NP1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -627,7 +647,6 @@ void CalcProcents()
 //----------------------------------------------------------------------------------
 //#define USE_VREF;
 //#define PLC_DEBUG
-#define convertToMili 1000
 void ProcessADC()
 {
 		//Channels
@@ -638,7 +657,7 @@ void ProcessADC()
 	Vref = 1.16*4095.0/(float)(ADCValues[8]);
 	else Vref =3.3;
 	#else
-	Vref = 3.3;
+	Vref = 3.33;
 	#endif
 	#ifndef PLC_DEBUG
 	temp = (float)ADCValues[9]*Vref/4095.0;
@@ -658,7 +677,7 @@ void ProcessADC()
 	temp = (float)ADCValues[6]*Vref/4095.0;
 	Channels.CH5 = ((24.49*temp)/2.49)*convertToMili;
 	temp = (float)ADCValues[7]*Vref/4095.0;
-	Channels.Vin = ((24.49*temp)/2.49)*convertToMili;
+	Channels.Vin = ((1327*temp)/249)*convertToMili;//Diranc 10.7888k olarak alındı.
 	#else
 	temp = (float)ADCValues[9]*Vref/4095.0;
 	Channels.Temp = ((1.43-temp)/4.3)+25.0;;
@@ -704,7 +723,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
