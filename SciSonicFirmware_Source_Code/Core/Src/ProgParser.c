@@ -27,7 +27,7 @@ bool Mvars[MAXMVAR];
 Timer_S Timers[MAXTVAR];
 bool Coils[MAXCOIL];
 uint16_t Counters[MAXCNTVAR];
-
+Counter_S Counter;
 CntChannels CntChnlsVal;
 CntDataStr CntData;
 //---------------------------------------------------------------------------
@@ -387,7 +387,6 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 	int index;
 	uint8_t op=0;
 	float *cntVal;
-
 	if(MyIDX[0]=='(')
 	{
 		MyIDX=MyIDX+1;
@@ -531,8 +530,8 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 			else if((op == CNTP || op == CNTN || op == CNTE) && *result)
 			{
 				int val;
-				if(op == CNTE)
-				{
+				/*if(op == CNTE)
+				{*/
 					MyIDX=MyIDX+3;
 					memcpy(data,MyIDX,8);
 					data[8]=0;
@@ -542,11 +541,12 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 						{
 							data[letter]=0;
 							MyIDX=MyIDX+letter+1;
-							sscanf((char*)data,"%d",&val);
+							sscanf((char*)data,"%d",&val);	//For CNTP and CNTN val is Delay Value Between Counts,
+															//For CNTE val is Reset Value
 							break;
 						}
 					}
-				}
+				/*}*/
 
 				switch(index)
 				{
@@ -632,18 +632,28 @@ bool ProcessProgLine(uint8_t *Progstring, uint32_t len, bool *result)
 				}
 				if(op == CNTP)
 				{
-					*cntVal = *cntVal + 1;
+					if((HAL_GetTick()-Counter.CounterStartTick)>=val)
+					{
+						*cntVal = *cntVal + 1;
+						Counter.CounterStartTick = HAL_GetTick();
+					}
+
 				}
 				else if(op == CNTN)
 				{
 					if(*cntVal > -1)
 					{
-						*cntVal = *cntVal - 1;
+						if((HAL_GetTick()-Counter.CounterStartTick)>=val)
+						{
+							*cntVal = *cntVal - 1;
+							Counter.CounterStartTick = HAL_GetTick();
+						}
 					}
 					else
 					{
 						*cntVal = -1;
 					}
+
 				}
 				else if(op == CNTE)
 				{

@@ -62,6 +62,11 @@ typedef struct Timer_S
 	uint8_t Type;
 }Timer_S;
 
+typedef struct Counter_S
+{
+	uint32_t CounterStartTick;
+}Counter_S;
+
 typedef struct CntDataStr
 {
 	float CntVal[MAXCNTVAR];

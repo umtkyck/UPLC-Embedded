@@ -17,4 +17,5 @@ main.c:616:6:SysTickEvent	4	static
 main.c:622:6:ADC_Interrupt_Handler	4	static
 main.c:627:6:CalcProcents	8	static
 main.c:651:6:ProcessADC	24	static
-main.c:710:6:Error_Handler	4	static
+main.c:730:7:tempValCheck	24	static
+main.c:843:6:Error_Handler	4	static
