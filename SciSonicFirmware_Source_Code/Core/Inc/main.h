@@ -38,7 +38,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN EFP */
 extern bool Send_Data_To_CDC(uint8_t * Data, uint8_t Len);
 /* USER CODE END EFP */
-
+int val2;
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOC

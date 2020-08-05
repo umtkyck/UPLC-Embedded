@@ -319,7 +319,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_13CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -645,7 +645,7 @@ void CalcProcents()
     }
 }
 //----------------------------------------------------------------------------------
-//#define USE_VREF;
+#define USE_VREF
 //#define PLC_DEBUG
 #define VinOffsetVal 1910
 void ProcessADC()
@@ -655,7 +655,7 @@ void ProcessADC()
 	float temp;
 	#ifdef USE_VREF
 	if(ADCValues[8]>0)
-	Vref = 1.16*4095.0/(float)(ADCValues[8]);
+	Vref = 1.157*4095.0/(float)(ADCValues[8]);
 	else Vref =3.3;
 	#else
 	Vref = 3.33;
@@ -667,18 +667,49 @@ void ProcessADC()
 	Channels.FB2p = (float)(ADCValues[1]/4095.0)*100.0;
 	Channels.FB1 = (float)(ADCValues[0]/4095.0)*Vref*1000;
 	Channels.FB2 = (float)(ADCValues[1]/4095.0)*Vref*1000;
+	if(ADCValues[2]>0)
+	{
+		val2 = ADCValues[2];
+		ADCValues[2] = ADCValues[2] + 60;
+	}
 	temp = (float)ADCValues[2]*Vref/4095.0;
-	Channels.CH1 = ((24.49*temp)/2.49)*convertToMili;
+	Channels.CH1 = (((24.49*temp*convertToMili)/2.49));
+	if(ADCValues[3]>0)
+	{
+		ADCValues[3] = ADCValues[3] + 60;
+	}
 	temp = (float)ADCValues[3]*Vref/4095.0;
-	Channels.CH2 = ((24.49*temp)/2.49)*convertToMili;
+	Channels.CH2 = (((24.49*temp*convertToMili)/2.49));
+	if(ADCValues[4]>0)
+	{
+		ADCValues[4] = ADCValues[4] + 60;
+	}
 	temp = (float)ADCValues[4]*Vref/4095.0;
-	Channels.CH3 = ((24.49*temp)/2.49)*convertToMili;
+	Channels.CH3 = (((24.49*temp*convertToMili)/2.49));
+	if(ADCValues[5]>0)
+	{
+		ADCValues[5] = ADCValues[5] + 60;
+	}
 	temp = (float)ADCValues[5]*Vref/4095.0;
-	Channels.CH4 = ((24.49*temp)/2.49)*convertToMili;
+	Channels.CH4 = (((24.49*temp*convertToMili)/2.49));
+	if(ADCValues[6]>0)
+	{
+		ADCValues[6] = ADCValues[6] + 60;
+	}
 	temp = (float)ADCValues[6]*Vref/4095.0;
-	Channels.CH5 = ((24.49*temp)/2.49)*convertToMili;
-	temp = (float)ADCValues[7]*Vref/4095.0;
-	Channels.Vin = (((24.49*temp)/2.49)*convertToMili) + VinOffsetVal;//Direnc 10.7888k olarak alındı.
+	Channels.CH5 = (((24.49*temp*convertToMili)/2.49));
+	if(ADCValues[7]>0)
+	{
+		ADCValues[7] = ADCValues[7] + 60;
+		temp = (float)ADCValues[7]*Vref/4095.0;
+		Channels.Vin = (((12.49*temp)/2.49)*convertToMili) + VinOffsetVal;
+	}
+	else
+	{
+		temp = (float)ADCValues[7]*Vref/4095.0;
+		Channels.Vin = (((12.49*temp)/2.49)*convertToMili);
+	}
+
 	#else
 	temp = (float)ADCValues[9]*Vref/4095.0;
 	Channels.Temp = ((1.43-temp)/4.3)+25.0;;
@@ -693,6 +724,112 @@ void ProcessADC()
 	#endif
 	CalcProcents();
 	ADCReady=false;
+}
+
+/*Will be modified*/
+float tempValCheck(float tempVal)
+{
+	if(0 <= tempVal && tempVal < 1 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else if(1 <= tempVal && tempVal < 2 )
+	{
+		tempVal = tempVal * 1.1;
+	}
+	else
+	{
+		/*Do Nothing*/
+	}
+	return tempVal;
 }
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
