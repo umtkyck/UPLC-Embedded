@@ -673,41 +673,46 @@ void ProcessADC()
 		ADCValues[2] = ADCValues[2] + 60;
 	}
 	temp = (float)ADCValues[2]*Vref/4095.0;
-	Channels.CH1 = (((24.49*temp*convertToMili)/2.49));
+	temp = ((8.2396 * temp * temp *temp) - (32.813 * temp *temp) + (53.346 * temp) - 19.091);
+	Channels.CH1 = temp*convertToMili;
 	if(ADCValues[3]>0)
 	{
 		ADCValues[3] = ADCValues[3] + 60;
 	}
 	temp = (float)ADCValues[3]*Vref/4095.0;
-	Channels.CH2 = (((24.49*temp*convertToMili)/2.49));
+	temp = ((8.2396 * temp * temp *temp) - (32.813 * temp *temp) + (53.346 * temp) - 19.091);
+	Channels.CH2 = temp*convertToMili;
 	if(ADCValues[4]>0)
 	{
 		ADCValues[4] = ADCValues[4] + 60;
 	}
 	temp = (float)ADCValues[4]*Vref/4095.0;
-	Channels.CH3 = (((24.49*temp*convertToMili)/2.49));
+	temp = ((8.2396 * temp * temp *temp) - (32.813 * temp *temp) + (53.346 * temp) - 19.091);
+	Channels.CH3 = temp*convertToMili;
 	if(ADCValues[5]>0)
 	{
 		ADCValues[5] = ADCValues[5] + 60;
 	}
 	temp = (float)ADCValues[5]*Vref/4095.0;
-	Channels.CH4 = (((24.49*temp*convertToMili)/2.49));
+	temp = ((8.2396 * temp * temp *temp) - (32.813 * temp *temp) + (53.346 * temp) - 19.091);
+	Channels.CH4 = temp*convertToMili;
 	if(ADCValues[6]>0)
 	{
 		ADCValues[6] = ADCValues[6] + 60;
 	}
 	temp = (float)ADCValues[6]*Vref/4095.0;
-	Channels.CH5 = (((24.49*temp*convertToMili)/2.49));
+	temp = ((8.2396 * temp * temp *temp) - (32.813 * temp *temp) + (53.346 * temp) - 19.091);
+	Channels.CH5 = temp*convertToMili;
 	if(ADCValues[7]>0)
 	{
 		ADCValues[7] = ADCValues[7] + 60;
 		temp = (float)ADCValues[7]*Vref/4095.0;
-		Channels.Vin = (((12.49*temp)/2.49)*convertToMili) + VinOffsetVal;
+		temp = ((8.2396 * temp * temp *temp) - (32.813 * temp *temp) + (53.346 * temp) - 19.091);
+		Channels.Vin = temp*convertToMili;
 	}
 	else
 	{
-		temp = (float)ADCValues[7]*Vref/4095.0;
-		Channels.Vin = (((12.49*temp)/2.49)*convertToMili);
+		Channels.Vin = 0;
 	}
 
 	#else
@@ -726,111 +731,6 @@ void ProcessADC()
 	ADCReady=false;
 }
 
-/*Will be modified*/
-float tempValCheck(float tempVal)
-{
-	if(0 <= tempVal && tempVal < 1 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else if(1 <= tempVal && tempVal < 2 )
-	{
-		tempVal = tempVal * 1.1;
-	}
-	else
-	{
-		/*Do Nothing*/
-	}
-	return tempVal;
-}
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
