@@ -1,0 +1,12 @@
+EEPROM.c:35:9:SPI_RW	32	static
+EEPROM.c:44:6:SPI_Transmit	24	static
+EEPROM.c:52:6:SPI_Receive	24	static
+EEPROM.c:59:6:Flash_Init	8	static
+EEPROM.c:67:6:Flash_WriteEnable	8	static
+EEPROM.c:74:6:Flash_WriteDisable	8	static
+EEPROM.c:86:9:Flash_ReadStatusRegister1	16	static
+EEPROM.c:96:9:Flash_ReadStatusRegister2	16	static
+EEPROM.c:106:6:Flash_WaitForWriteEnd	16	static
+EEPROM.c:121:6:Flash_EraseChip	8	static
+EEPROM.c:133:6:Flash_WritePage	32	static
+EEPROM.c:160:6:Flash_ReadPage	32	static
